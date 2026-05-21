@@ -38,6 +38,8 @@ int maxPWMPercentage = 95;
 int lastPotValue;
 int currentPotValue;
 int potValueDifference = 40;
+const int potOffThreshold = 300;
+const int potOnThreshold  = 380;
 
 uint8_t targetPercent = 0;
 uint8_t currentPercent = 0;
@@ -76,8 +78,11 @@ void setFanPower(bool on) {
 }
 
 int readPot() {
-    int potRaw = analogRead(POT_PIN);
-    return potRaw;
+    long total = 0;
+    for (int i = 0; i < 8; i++) {
+        total += analogRead(POT_PIN);
+    }
+    return total / 8;
 }
 
 void readButton() {
@@ -86,8 +91,10 @@ void readButton() {
 
     if (state != lastButtonState && millis() - lastButtonChange > debounceMs) {
         lastButtonChange = millis();
-
+        
         if (lastButtonState == LOW && state == HIGH) {
+            Serial.println("---- BUTTON PRESSED ----");
+            lastPotValue = readPot();
             systemOn = !systemOn;
             systemSwitchedState = true;
         }
@@ -95,13 +102,10 @@ void readButton() {
         lastButtonState = state;
     }
 
-    if (!systemOn) {
-        if (currentPotValue > 300 + potValueDifference) {
-            systemOn = true;
-            systemSwitchedState = true;
-        }
+    if (!systemOn && currentPotValue >= potOnThreshold) {
+        systemOn = true;
+        systemSwitchedState = true;
     }
-
 }
 
 unsigned long getRampInterval(uint8_t currentPercent) {
@@ -114,10 +118,9 @@ void setFanSpeed() {
 
     int potRaw = readPot();
     
-    if (potRaw <= 300) {
+    if (potRaw <= potOffThreshold) {
         systemOn = false;
         systemSwitchedState = true;
-        lastPotValue = potRaw;
         return;
     }
 
