@@ -1,3 +1,6 @@
+<img width="4032" height="3024" alt="laptop_fan" src="https://github.com/user-attachments/assets/f855e301-855f-4d91-8054-6a13c18bcd8b" />
+
+
 # Laptop Cooling Pad
 
 A custom laptop cooling pad built from scratch — custom PCB, ESP32 microcontroller, and two CORSAIR 140mm fans. Designed in Fusion 360, hand soldered, and programmed in C++.
