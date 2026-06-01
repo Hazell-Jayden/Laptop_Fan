@@ -31,34 +31,8 @@ Fan speed ramps smoothly rather than jumping instantly — the ramp rate adjusts
 
 Written in C++ using the Arduino framework on PlatformIO.
 
-- **PWM** — 25kHz, 8-bit resolution on the ESP32's LEDC peripheral
+- **PWM** — 25kHz, 8-bit resolution
 - **Speed control** — pot mapped to 17–95% duty cycle with smooth ramping
 - **Auto off** — pot below threshold cuts the fans; turning it back up restores them
 - **Button toggle** — debounced on/off toggle with a short startup ramp when powering on
 - **Pot averaging** — 8-sample average to filter ADC noise
-
----
-
-## Lessons Learned
-
-- The toggle switch is SPDT, meaning the ESP stays powered even when the fans are off — a DPDT switch would properly cut everything
-- Be careful probing around 12V with a multimeter — bridged 12V onto an ESP digital pin, not ideal. Clamping diodes would help here
-- Indicator LEDs visible from outside the enclosure would be a nice quality-of-life addition
-
----
-
-## What's Next
-
-- DPDT switch to fully cut power
-- User-facing status LEDs
-- Full enclosure redesign
-- Bluetooth connectivity to read laptop temperatures and auto-adjust fan speed
-
----
-
-## Tools & Suppliers
-
-- **Design** — Fusion 360 (PCB + enclosure)
-- **IDE** — VS Code + PlatformIO
-- **Parts** — DigiKey
-- **PCB** — PCBWay
